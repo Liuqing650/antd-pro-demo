@@ -7,7 +7,7 @@ function checkStatus(response) {
   }
   notification.error({
     message: `请求错误 ${response.status}: ${response.url}`,
-    description: response.statusText,
+    description: response.url,
   });
   const error = new Error(response.statusText);
   error.response = response;
@@ -28,7 +28,7 @@ export default function request(url, options) {
   var newOptions = { ...defaultOptions, ...options };
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
     newOptions.headers = {
-      Accept: 'application/json',
+      Accept: 'application/json , text/plain, */*',
       'Content-Type': 'application/json; charset=utf-8',
       ...newOptions.headers,
     };
@@ -36,9 +36,8 @@ export default function request(url, options) {
   }
   return fetch(url, newOptions)
     .then(checkStatus)
-    .then(response => response.json())
     .catch((error) => {
-      if (error.code) {
+      if (error.errorCode) {
         notification.error({
           message: error.name,
           description: error.message,
@@ -51,5 +50,6 @@ export default function request(url, options) {
         });
       }
       return error;
-    });
+    })
+    .then(response => response.json());
 }

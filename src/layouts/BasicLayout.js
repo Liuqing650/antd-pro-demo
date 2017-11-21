@@ -102,9 +102,8 @@ class BasicLayout extends React.PureComponent {
   getDefaultCollapsedSubMenus(props) {
     const currentMenuSelectedKeys = [...this.getCurrentMenuSelectedKeys(props)];
     currentMenuSelectedKeys.splice(-1, 1);
-    console.log(currentMenuSelectedKeys);
     if (currentMenuSelectedKeys.length === 0) {
-      return ['dashboard'];
+      return ['admin'];
     }
     return currentMenuSelectedKeys;
   }
@@ -361,7 +360,7 @@ class BasicLayout extends React.PureComponent {
                   )
                 )
               }
-              <Redirect exact from="/" to="/dashboard/analysis" />
+              <Redirect exact from="/" to="/admin/adminList" />
               <Route component={NotFound} />
             </Switch>
             <GlobalFooter
@@ -380,7 +379,7 @@ class BasicLayout extends React.PureComponent {
               }]}
               copyright={
                 <div>
-                  Copyright <Icon type="copyright" /> 2017 蚂蚁金服体验技术部出品
+                  {config.footer}
                 </div>
               }
             />
@@ -388,7 +387,6 @@ class BasicLayout extends React.PureComponent {
         </Layout>
       </Layout>
     );
-
     return (
       <DocumentTitle title={this.getPageTitle()}>
         <ContainerQuery query={query}>
