@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "dva";
 import {
     AreaLayer,
-} from '../../components/Charts';
+} from '../../components/StatisticsChart';
 
 @connect(state=>({
     statistics: state.statistics
@@ -17,18 +17,18 @@ export default class PVStatistics extends React.Component {
     render() {
         const { overviewData, pvHourData, pvLoading } = this.props.statistics;
 
-        console.log("overviewData========>", overviewData);
-        console.log("pvHourData========>", pvHourData);
+        console.log(pvHourData)
+        
 
         return (
             <div>
-                454
-              <AreaLayer
-                color="#975FE4"
-                height={46}
-                data={pvHourData.today}
-              />
-                PVStatistics
+                <AreaLayer
+                    color="#975FE4"
+                    height={200}
+                    xAxis="hour"
+                    yAxis="count"
+                    data={pvHourData.today}
+                />
             </div>
         )
     }
