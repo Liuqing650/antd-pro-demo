@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect} from 'dva';
 import { Form, Input, Select, Button,Row,Col,Menu,Dropdown,Icon } from 'antd';
-import TableComponent from '../../components/TableComponent/index';
-import ModalComponent from '../../components/ModalComponent/index';
+import { TableComponent, ModalComponent } from '../../components/common';
 import styles from "./AdminListStyle.less";
 import commonStyles from "./CommonStyle.less";
 // ant-design-pro样式

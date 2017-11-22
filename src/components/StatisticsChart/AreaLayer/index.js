@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import G2 from 'g2';
-import { LineChart, Line } from 'recharts';
+// import ReactEcharts from 'echarts-for-react';
+// import { LineChart, Line } from 'recharts';
 import equal from '../equal';
 import styles from '../index.less';
 
@@ -32,12 +33,20 @@ class AreaLayer extends PureComponent {
 
     renderChart(data) {
         const {
-            height = 0, fit = true, color, borderWidth = 2, line, xAxis, yAxis, animate = true,
+            height = 0, fit = true, colors, borderWidth = 2, line, xAxis, yAxis, animate = true, namesArr,
         } = this.props;
-        const borderColor = this.props.borderColor || color;
-
-        if (!data || (data && data.length < 1)) {
+        
+        const borderColors = this.props.borderColors || colors;
+        const keys = [];
+        if (!data) {
             return;
+        } else if (data) {
+            for(let key in data) {
+                if(!key) {
+                    return;
+                }
+                keys.push(key);
+            }
         }
 
         // clean
@@ -49,7 +58,7 @@ class AreaLayer extends PureComponent {
             height: height + 54,
             animate,
             plotCfg: {
-                margin: [36, 5, 30, 5],
+                margin: [36, 100, 30, 100],
             },
             legend: null,
         });
@@ -71,12 +80,11 @@ class AreaLayer extends PureComponent {
         }
 
         const dataConfig = {
-            hour: {
+            'hour': {
                 type: 'cat',
-                range: [0, 1],
                 ...xAxis,
             },
-            count: {
+            'count': {
                 min: 0,
                 ...yAxis,
             },
@@ -92,16 +100,19 @@ class AreaLayer extends PureComponent {
             },
         });
 
-        const view = chart.createView();
-        view.source(data, dataConfig);
-
-        view.area().position('hour*count').color(color).style({ fillOpacity: 1 });
+        keys.map((item,index)=>{
+            const view = chart.createView();
+            view.source(data[item]);
+            view.area().position('hour*count').color(colors[index]).style({ fillOpacity: 0.8 });
+        })
 
         if (line) {
-            const view2 = chart.createView();
-            view2.source(data, dataConfig);
-            view2.line().position('hour*count').color(borderColor).size(borderWidth);
-            view2.tooltip(false);
+            keys.map((item, index) => {
+                const view2 = chart.createView();
+                view2.source(data, dataConfig, namesArr);
+                view2.line().position('hour*count').color(borderColors[index]).size(borderWidth);
+                view2.tooltip(false);
+            })
         }
         chart.render();
 

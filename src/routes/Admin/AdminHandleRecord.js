@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'dva';
 import { Form, Input, Select, Button, Row, Col, Menu, Dropdown, Icon } from 'antd';
-import TableComponent from '../../components/TableComponent/index';
+import { TableComponent, } from '../../components/common';
 import commonStyles from "./CommonStyle.less";
 import styles from "./AdminRoleStyle.less";
 

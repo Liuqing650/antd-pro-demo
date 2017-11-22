@@ -1,5 +1,12 @@
 import dynamic from 'dva/dynamic';
 
+// wrapper of dynamic
+const dynamicWrapper = (app, models, component) => dynamic({
+    app,
+    models: () => models.map(m => import(`../models/${m}.js`)),
+    component: () => component,
+});
+
 export const getNavData = app => [{
     component: dynamic({
         app,
@@ -20,50 +27,36 @@ export const getNavData = app => [{
                     {
                     name: '管理员列表',
                     path: 'adminList',
-                    component: dynamic({
-                        app,
-                        models: () => [
-                            import('../models/admin'),
-                        ],
-                        component: () => import('../routes/Admin/AdminList'),
-                    }),
+                    component: dynamicWrapper(app, ['admin'], import('../routes/Admin/AdminList')),
                 }, {
                     name: '管理员权限组设置',
                     path: 'adminRoleController',
-                    component: dynamic({
-                        app,
-                        models: () => [
-                            import('../models/adminRole'),
-                        ],
-                        component: () => import('../routes/Admin/AdminRole'),
-                    }),
+                    component: dynamicWrapper(app, ['adminRole'], import('../routes/Admin/AdminRole')),
                 }, {
                     name: '管理员操作记录',
                     path: 'adminHandleRecord',
-                    component: dynamic({
-                        app,
-                        models: () => [
-                            import('../models/adminOperate'),
-                        ],
-                        component: () => import('../routes/Admin/AdminHandleRecord'),
-                    }),
+                    component: dynamicWrapper(app, ['adminOperate'], import('../routes/Admin/AdminHandleRecord')),
                 }
             ]
         }, {
             name: '统计中心',
             path: 'statistics',
             icon: 'area-chart',
-            children: [{
-                name: 'PV实时统计',
-                path: 'pv',
-                component: dynamic({
-                    app,
-                    models: () => [
-                        import('../models/statistics'),
-                    ],
-                    component: () => import('../routes/Statistics/PVStatistics'),
-                }),
-            }]
+            children: [
+                {
+                    name: 'PV实时统计',
+                    path: 'pv',
+                    component: dynamicWrapper(app, ['statistics'], import('../routes/Statistics/PVStatistics')),
+                }, {
+                    name: '页面访问',
+                    path: 'pageDayView',
+                    component: dynamicWrapper(app, ['statistics'], import('../routes/Statistics/PageDayView')),
+                }, {
+                    name: '用户访问统计',
+                    path: 'userStatistics',
+                    component: dynamicWrapper(app, ['statistics'], import('../routes/Statistics/UserStatistics')),
+                }
+            ]
         }, {
             name: '个人中心',
             path: 'usercenter',
@@ -71,13 +64,7 @@ export const getNavData = app => [{
             children: [{
                 name: '修改密码',
                 path: 'modifyPwd',
-                component: dynamic({
-                    app,
-                    models: () => [
-                    import('../models/userCenter'),
-                    ],
-                    component: () => import('../routes/UserCenter/ModifyPassword'),
-                }),
+                component: dynamicWrapper(app, ['userCenter'], import('../routes/UserCenter/ModifyPassword')),
             }]
         }, 
         // {

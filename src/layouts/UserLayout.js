@@ -65,7 +65,7 @@ class UserLayout extends React.PureComponent {
               )
             )
           }
-          <GlobalFooter className={styles.footer} links={links} copyright={copyright} />
+          {/* <GlobalFooter className={styles.footer} links={links} copyright={copyright} /> */}
         </div>
       </DocumentTitle>
     );
